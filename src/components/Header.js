@@ -1,9 +1,26 @@
-import { AppBar, makeStyles, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Button, makeStyles, Toolbar, Typography } from "@material-ui/core";
+import Link from "./Link";
 
 const useStyles = makeStyles(theme => ({
   logo: {
     fontWeight: '600',
-  }
+  },
+  link: {
+    color: 'white',
+  },
+  checkoutLink: {
+    color: 'white',
+    fontWeight: '600',
+    marginLeft: '6rem'
+  },
+  flexGrow: {
+    flexGrow: 1,
+  },
+  loginBtn: {
+    marginRight: '1rem',
+  },
+  toolbarOffset: theme.mixins.toolbar,
+
 }));
 
 const Header = () => {
@@ -15,7 +32,20 @@ const Header = () => {
         position="fixed"
       >
         <Toolbar>
-          <Typography variant="h6" className={classes.logo}>Theatre Booking</Typography>
+          <Link href="/" className={classes.link}>
+            <Typography variant="h6" className={classes.logo}>Theatre Booking</Typography>
+          </Link>
+
+          {/* <Link href="/" className={classes.checkoutLink}>
+            Checkout Now
+          </Link> */}
+
+          <Button variant="text" className={classes.checkoutLink}>Chekout Now</Button>
+
+          <div className={classes.flexGrow}/>
+
+          <Button variant="contained" className={classes.loginBtn}>Login</Button>
+          <Button variant="contained" color="secondary">Register</Button>
         </Toolbar>
       </AppBar>
     </div>
