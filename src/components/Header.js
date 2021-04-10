@@ -1,4 +1,5 @@
 import { AppBar, Button, makeStyles, Toolbar, Typography } from "@material-ui/core";
+import { useHistory } from "react-router";
 import Link from "./Link";
 
 const useStyles = makeStyles(theme => ({
@@ -25,6 +26,9 @@ const useStyles = makeStyles(theme => ({
 
 const Header = () => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const goTo = where => history.push(where);
 
   return (
     <div>
@@ -40,8 +44,8 @@ const Header = () => {
 
           <div className={classes.flexGrow}/>
 
-          <Button variant="contained" className={classes.loginBtn}>Login</Button>
-          <Button variant="contained" color="secondary">Register</Button>
+          <Button variant="contained" className={classes.loginBtn} onClick={() => goTo('/login')}>Login</Button>
+          <Button variant="contained" color="secondary" onClick={() => goTo('/register')}>Register</Button>
         </Toolbar>
       </AppBar>
 

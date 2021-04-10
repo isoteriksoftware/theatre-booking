@@ -1,5 +1,6 @@
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import { useEffect } from "react";
+import { useHistory } from "react-router";
 import Header from "../components/Header";
 import { scrollToTop } from "../components/utils";
 
@@ -75,10 +76,13 @@ const useStyles = makeStyles(theme => ({
 
 const Index = () => {
   const classes = useStyles();
+  const history = useHistory();
 
   useEffect(() => {
     scrollToTop();
   }, []);
+
+  const goTo = where => history.push(where);
 
   const ShowCard = ({ show = { image: "images/card 10.jpg", name: "The Avengers",
     description: "" } }) => {
