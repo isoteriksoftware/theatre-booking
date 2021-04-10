@@ -6,9 +6,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Index = () => {
+  const classes = useStyles();
+
   return (
     <div>
       <Header/>
+
+      Hello
     </div>
   );
 };

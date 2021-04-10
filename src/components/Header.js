@@ -36,10 +36,6 @@ const Header = () => {
             <Typography variant="h6" className={classes.logo}>Theatre Booking</Typography>
           </Link>
 
-          {/* <Link href="/" className={classes.checkoutLink}>
-            Checkout Now
-          </Link> */}
-
           <Button variant="text" className={classes.checkoutLink}>Chekout Now</Button>
 
           <div className={classes.flexGrow}/>
@@ -48,6 +44,8 @@ const Header = () => {
           <Button variant="contained" color="secondary">Register</Button>
         </Toolbar>
       </AppBar>
+
+      <div className={classes.toolbarOffset}/>
     </div>
   );
 };
