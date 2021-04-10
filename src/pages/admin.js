@@ -1,5 +1,10 @@
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Button, Dialog, DialogContent, DialogTitle, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Form, Formik } from "formik";
+import { useState } from "react";
 import Header from "../components/Header";
+import SlideTransition from "../components/SlideTransition";
+import * as yup from "yup";
+import FormikField from "../components/FormikField";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,10 +45,51 @@ const useStyles = makeStyles(theme => ({
     textAlign: "right",
     paddingTop: '.5rem',
   },
+  form: {
+    marginTop: '3rem',
+
+    '& .header': {
+      fontWeight: 600,
+      marginBottom: '3rem',
+      [theme.breakpoints.only('xs')]: {
+        fontSize: '1.5rem',
+      },
+      [theme.breakpoints.only('md')]: {
+        fontSize: '2rem',
+      },
+    },
+    '& .sub-header': {
+      fontWeight: 400,
+      marginBottom: '2rem',
+      [theme.breakpoints.only('xs')]: {
+        fontSize: '1.2rem',
+      },
+    },
+    '& .field': {
+      marginBottom: '1.2rem',
+      borderRadius: '5px',
+    },
+    '& .field .inner': {
+      padding: '.2rem'
+    },
+    '& .submit-btn': {
+      padding: '.7rem 2.5rem',
+      textTransform: 'capitalize',
+      fontWeight: 500,
+      fontSize: '1.2rem',
+      borderRadius: '1rem',
+      marginTop: '2rem',
+      boxShadow: 'none',
+      [theme.breakpoints.only('xs')]: {
+        fontSize: '1.2rem',
+      },
+    },
+  },
 }));
 
 const Admin = () => {
   const classes = useStyles();
+  const [showDialog, setShowDialog] = useState(false);
 
   const ShowCard = ({ show = { image: "images/card 10.jpg", name: "The Avengers",
     description: "" } }) => {
@@ -74,7 +120,7 @@ const Admin = () => {
     <div className={classes.root}>
       <Header/>
 
-      <Button variant="contained" color="secondary">Add New Show</Button>
+      <Button variant="contained" color="secondary" onClick={() => setShowDialog(true)}>Add New Show</Button>
 
       <div className={classes.showsContainer}>
         <Typography variant="h5" className={classes.showsHeader}>Available Performances</Typography>
@@ -85,6 +131,70 @@ const Admin = () => {
           </Grid>
         </div>
       </div>
+
+      <Dialog
+        fullWidth
+        maxWidth="sm"
+        open={showDialog}
+        onClose={() => setShowDialog(false)}
+        TransitionComponent={SlideTransition}
+        >
+          <DialogTitle>Add A Show</DialogTitle>
+          <DialogContent>
+            <Formik
+              initialValues={{
+                username: '',
+                name: '',
+                password: '',
+              }}
+
+              validationSchema={yup.object({
+                username: yup.string()
+                  .max(12, 'Username should not be greater than 12 characters')
+                  .required('Please enter your username'),
+                name: yup.string()
+                  .max(12, 'Name should not be greater than 30 characters')
+                  .required('Please enter your name'),
+                password: yup.string()
+                  .required('Please enter your password'),
+              })}
+
+              //onSubmit={doLogin}
+              >
+              <Form className={classes.form}>
+                <FormikField
+                  name="name"
+                  variant="outlined"
+                  label="Name"
+                  color="secondary"
+                  className="field"
+                  InputProps={{ className: "inner" }}
+                />
+                <FormikField
+                  name="description"
+                  variant="outlined"
+                  label="Description"
+                  color="secondary"
+                  className="field"
+                  multiline
+                  rows={6}
+                  InputProps={{ className: "inner" }}
+                />
+                
+                <Button
+                  fullWidth
+                  type="submit" 
+                  variant="contained" 
+                  color="primary" 
+                  size="large"
+                  className="submit-btn"
+                  >
+                    Register
+                  </Button>
+              </Form>
+            </Formik>
+          </DialogContent>
+        </Dialog>
     </div>
   );
 };
