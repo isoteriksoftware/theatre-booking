@@ -1,4 +1,5 @@
 import { AppBar, Button, makeStyles, Toolbar, Typography } from "@material-ui/core";
+import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import Link from "./Link";
 
@@ -24,7 +25,9 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-const Header = () => {
+const Header = connect(state => ({
+  auth: {...state.userReducer.auth},
+}))(({ auth }) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -44,14 +47,20 @@ const Header = () => {
 
           <div className={classes.flexGrow}/>
 
-          <Button variant="contained" className={classes.loginBtn} onClick={() => goTo('/login')}>Login</Button>
-          <Button variant="contained" color="secondary" onClick={() => goTo('/register')}>Register</Button>
+          {auth.authenticated ?
+          <>
+            <Button variant="contained" color="secondary" onClick={() => goTo(auth.logout)}>Logout</Button>
+          </> :
+          <>
+            <Button variant="contained" className={classes.loginBtn} onClick={() => goTo('/login')}>Login</Button>
+            <Button variant="contained" color="secondary" onClick={() => goTo('/register')}>Register</Button>
+          </>}
         </Toolbar>
       </AppBar>
 
       <div className={classes.toolbarOffset}/>
     </div>
   );
-};
+});
 
 export default Header;

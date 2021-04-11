@@ -4,6 +4,7 @@ import Index from "./pages";
 import Admin from "./pages/admin";
 import AdminLogin from "./pages/admin-login";
 import Login from "./pages/login";
+import Logout from "./pages/logout";
 import Register from "./pages/register";
 import theme from "./theme";
 
@@ -24,6 +25,9 @@ const App = () => {
         </Route>
         <Route path="/login">
           <Login/>
+        </Route>
+        <Route path="/logout">
+          <Logout/>
         </Route>
         <Route path="/">
           <Index/>
