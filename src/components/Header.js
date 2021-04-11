@@ -1,9 +1,9 @@
 import { AppBar, Badge, Button, Hidden, IconButton, makeStyles, Menu, MenuItem, Toolbar, Typography } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import Link from "./Link";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles(theme => ({
   logo: {

@@ -10,6 +10,9 @@ import * as creators from '../redux/actions/creators';
 const useStyles = makeStyles(theme => ({
   showCaseContainer: {
     padding: '2rem 5rem',
+    [theme.breakpoints.down('sm')]: {
+      padding: '1rem .5rem',
+    }
   },
   showCase: {
     backgroundImage: 'url(images/showcase-bg.png)',
@@ -17,6 +20,7 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'cover',
     width: '100%',
     borderRadius: '2rem',
+    backgroundPosition: 'center',
   },
   showCaseInner: {
     borderRadius: '2rem',
@@ -24,20 +28,32 @@ const useStyles = makeStyles(theme => ({
     padding: '5rem 10rem 1rem 10rem',
     textAlign: 'center',
     color: 'white',
+    [theme.breakpoints.down('sm')]: {
+      padding: '4rem 3rem 2rem 2rem',
+    }
   },
   showCaseTitle: {
     fontWeight: 700,
     marginBottom: '2rem',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.7rem',
+    }
   },
   showCaseBtn: {
     marginTop: '7rem',
     textTransform: 'capitalize',
     fontSize: '1.5rem',
-    borderRadius: '4rem'
+    borderRadius: '4rem',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '4rem',
+    }
   },
   showsContainer: {
     padding: '2rem 5rem',
-    marginTop: '2rem',
+    marginTop: '1rem',
+    [theme.breakpoints.down('sm')]: {
+      padding: '1rem',
+    }
   },
   showsHeader: {
     fontWeight: 'bold',

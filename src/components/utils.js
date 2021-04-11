@@ -4,7 +4,7 @@ import withReactContent from "sweetalert2-react-content";
 import * as ReactScroll from 'react-scroll';
 import { IS_DEVELOPMENT_MODE } from "../init";
 
-export const API_BASE_URL = IS_DEVELOPMENT_MODE ? 'http://localhost/theatre-booking-backend/public/' : 'https://api.theatre-booking.com/public/';
+export const API_BASE_URL = IS_DEVELOPMENT_MODE ? 'http://localhost/theatre-booking-backend/public/' : 'http://api.theatre-booking.ictweare.com/public/';
 
 export const ReactSwal = withReactContent(Swal);
 export const animateScroll = ReactScroll.animateScroll;
