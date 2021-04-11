@@ -1,12 +1,16 @@
-import { AppBar, Badge, Button, makeStyles, Toolbar, Typography } from "@material-ui/core";
-import { useEffect } from "react";
+import { AppBar, Badge, Button, Hidden, IconButton, makeStyles, Menu, MenuItem, Toolbar, Typography } from "@material-ui/core";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import Link from "./Link";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles(theme => ({
   logo: {
     fontWeight: '600',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1rem',
+    }
   },
   link: {
     color: 'white',
@@ -23,7 +27,9 @@ const useStyles = makeStyles(theme => ({
     marginRight: '1rem',
   },
   toolbarOffset: theme.mixins.toolbar,
-
+  menuIcon: {
+    color: 'white',
+  },
 }));
 
 const Header = connect(state => ({
@@ -33,9 +39,21 @@ const Header = connect(state => ({
   const classes = useStyles();
   const history = useHistory();
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
   const goTo = where => history.push(where);
 
-  useEffect(() => console.log(cart) , [cart])
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = (link) => {
+    setAnchorEl(null);
+
+    if (link !== null)
+      history.push(link);
+  };
+
   return (
     <div>
       <AppBar
@@ -46,20 +64,51 @@ const Header = connect(state => ({
             <Typography variant="h6" className={classes.logo}>Theatre Booking</Typography>
           </Link>
 
-          <Badge badgeContent={cart.length} color="secondary">
-            <Button variant="text" className={classes.checkoutLink}>Chekout Now</Button>
-          </Badge>
+          <Hidden smDown>
+            <Badge badgeContent={cart.length} color="secondary">
+              <Button variant="text" className={classes.checkoutLink}>Chekout Now</Button>
+            </Badge>
 
-          <div className={classes.flexGrow}/>
+            <div className={classes.flexGrow}/>
 
-          {auth.authenticated ?
-          <>
-            <Button variant="contained" color="secondary" onClick={() => goTo(auth.logout)}>Logout</Button>
-          </> :
-          <>
-            <Button variant="contained" className={classes.loginBtn} onClick={() => goTo('/login')}>Login</Button>
-            <Button variant="contained" color="secondary" onClick={() => goTo('/register')}>Register</Button>
-          </>}
+            {auth.authenticated ?
+            <>
+              <Button variant="contained" color="secondary" onClick={() => goTo(auth.logout)}>Logout</Button>
+            </> :
+            <>
+              <Button variant="contained" className={classes.loginBtn} onClick={() => goTo('/login')}>Login</Button>
+              <Button variant="contained" color="secondary" onClick={() => goTo('/register')}>Register</Button>
+            </>}
+          </Hidden>
+
+          <Hidden mdUp>
+            <div className={classes.flexGrow}/>
+
+            <IconButton className={classes.menuIcon} edge="start" size="medium" aria-label="icon" onClick={handleMenuClick}>
+              <MoreVertIcon fontSize="large"/>
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={() => handleMenuClose(null)}
+              className={classes.menu}
+            >
+              <MenuItem onClick={() => handleMenuClose(null)}>
+                <Badge badgeContent={cart.length} color="secondary">
+                  Chekout Now
+                </Badge>
+              </MenuItem>
+              {auth.authenticated ?
+              <>
+                <MenuItem onClick={() => handleMenuClose('/logout')}>Logout</MenuItem>
+              </> :
+              <>
+                <MenuItem onClick={() => handleMenuClose('/login')}>Login</MenuItem>
+                <MenuItem onClick={() => handleMenuClose('/register')}>Register</MenuItem>
+              </>}
+            </Menu>
+          </Hidden>
         </Toolbar>
       </AppBar>
 
