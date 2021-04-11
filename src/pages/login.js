@@ -2,9 +2,12 @@ import { Button, makeStyles, Typography } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import { useEffect } from "react";
 import Header from "../components/Header";
-import { scrollToTop } from "../components/utils";
+import { axiosInstance, ReactSwal, scrollToTop, showError, showLoading, showNetworkError } from "../components/utils";
 import * as yup from "yup";
 import FormikField from "../components/FormikField";
+import * as creators from '../redux/actions/creators';
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -59,10 +62,42 @@ const useStyles = makeStyles(theme => ({
 
 const Login = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     scrollToTop();
   }, []);
+
+  const doLogin = values => {
+    showLoading('Please wait...');
+
+    axiosInstance.post('user/session', {}, {
+      auth: {
+        username: values.username,
+        password: values.password,
+      },
+    })
+    .then(res => {
+      ReactSwal.close();
+
+      if (res.status === 200) {
+        // Store persistent data
+        const data = {
+        };
+
+        dispatch(creators.user.authenticate(true, data, '/logout'));
+        history.push('/');
+      }
+      else if (res.status === 401) {
+        showError('Oops!', 'Invalid username or password');
+      }
+      else {
+        showNetworkError();
+      }
+    })
+    .catch(() => showNetworkError())
+  };
 
   return (
     <div className={classes.root}>
@@ -85,7 +120,7 @@ const Login = () => {
               .required('Please enter your password'),
           })}
 
-          //onSubmit={doLogin}
+          onSubmit={doLogin}
           >
           <Form className={classes.form}>
             <FormikField
