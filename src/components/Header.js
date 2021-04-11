@@ -1,4 +1,5 @@
-import { AppBar, Button, makeStyles, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Badge, Button, makeStyles, Toolbar, Typography } from "@material-ui/core";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import Link from "./Link";
@@ -27,12 +28,14 @@ const useStyles = makeStyles(theme => ({
 
 const Header = connect(state => ({
   auth: {...state.userReducer.auth},
-}))(({ auth }) => {
+  cart: [...state.userReducer.cart],
+}))(({ auth, cart }) => {
   const classes = useStyles();
   const history = useHistory();
 
   const goTo = where => history.push(where);
 
+  useEffect(() => console.log(cart) , [cart])
   return (
     <div>
       <AppBar
@@ -43,7 +46,9 @@ const Header = connect(state => ({
             <Typography variant="h6" className={classes.logo}>Theatre Booking</Typography>
           </Link>
 
-          <Button variant="text" className={classes.checkoutLink}>Chekout Now</Button>
+          <Badge badgeContent={cart.length} color="secondary">
+            <Button variant="text" className={classes.checkoutLink}>Chekout Now</Button>
+          </Badge>
 
           <div className={classes.flexGrow}/>
 

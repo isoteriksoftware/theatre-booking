@@ -4,6 +4,7 @@ const initialState = {
     isLogout: false,
     auth: {
         authenticated: false,
+        isAdmin: false,
         data: {},
         logout: '',
     },
@@ -13,6 +14,10 @@ const initialState = {
 // Check for any session data
 if (sessionStorage.getItem('auth')) {
     initialState.auth = JSON.parse(sessionStorage.getItem('auth'));
+}
+
+if (sessionStorage.getItem('cart')) {
+    initialState.cart = JSON.parse(sessionStorage.getItem('cart'));
 }
 
 export const userReducer = (state = initialState, action) => {
@@ -40,6 +45,7 @@ export const userReducer = (state = initialState, action) => {
       const newState = {...state};
       newState.cart = [...state.cart, action.payload];
       
+      sessionStorage.setItem('cart', JSON.stringify(newState.cart));
       return newState;
   }
     

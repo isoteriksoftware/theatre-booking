@@ -101,6 +101,8 @@ const Index = () => {
     .catch(() => {});
   }, [dispatch]);
 
+  const addToCart = show => dispatch(creators.user.addToCart(show));
+
   const goTo = where => history.push(where);
 
   const ShowCard = ({ show }) => {
@@ -117,7 +119,7 @@ const Index = () => {
               <div className={classes.showDate}>
                 <Typography variant="caption" color="textSecondary">{show.start_date}</Typography>
               </div>
-              <Button fullWidth variant="outlined" color="secondary" className={classes.bookShowBtn}>Book A Seat</Button>
+              <Button fullWidth variant="outlined" color="secondary" className={classes.bookShowBtn} onClick={() => addToCart(show)}>Book A Seat</Button>
             </Grid>
           </Grid>
         </div>
@@ -149,7 +151,7 @@ const Index = () => {
         <div className={classes.showContainer}>
           <Grid container alignItems="center" spacing={3}>
             {shows ? (
-              shows.map((show, index) => <ShowCard show={show}/>)
+              shows.map((show, index) => <ShowCard key={index} show={show}/>)
             ) :
             <Skeleton variant="rect" width="100%" height={300}/>}
           </Grid>
