@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: '1rem',
     [theme.breakpoints.down('sm')]: {
       padding: '1rem',
+      marginTop: '3rem',
     }
   },
   showsHeader: {
@@ -61,6 +62,10 @@ const useStyles = makeStyles(theme => ({
   showContainer: {
     padding: '2rem 5rem',
     marginTop: '2rem',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0rem 1rem',
+      marginTop: '1rem',
+    }
   },
   showCard: {
     background: 'white',
@@ -128,8 +133,8 @@ const Index = () => {
       <Grid item xs={12} md={6}>
         <div className={classes.showCard}>
           <Grid container spacing={3}>
-            <Grid item xs={4}><img src={show.image_url} alt="Cover" className={classes.showImg}/></Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12} md={4}><img src={show.image_url} alt="Cover" className={classes.showImg}/></Grid>
+            <Grid item xs={12} md={8}>
               <Typography variant="h6" className={classes.showTitle}>{show.name}</Typography>
               <Typography variant="body1" className={classes.showContent}>
                 {show.description}
