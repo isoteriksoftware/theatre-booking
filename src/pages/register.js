@@ -9,6 +9,9 @@ import FormikField from "../components/FormikField";
 const useStyles = makeStyles(theme => ({
   root: {
     padding: '5rem 10rem',
+    [theme.breakpoints.down('sm')]: {
+      padding: '3rem 1rem',
+    }
   },
   container: {
     background: 'white',

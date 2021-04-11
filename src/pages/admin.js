@@ -7,7 +7,7 @@ import * as yup from "yup";
 import FormikField from "../components/FormikField";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
-import { axiosInstance, generateErrorsMarkup, showError, showInfo, showLoading, showNetworkError, showSuccess } from "../components/utils";
+import { axiosInstance, generateErrorsMarkup, ReactSwal, showError, showInfo, showLoading, showNetworkError, showSuccess } from "../components/utils";
 import Skeleton from '@material-ui/lab/Skeleton';
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
@@ -19,6 +19,9 @@ import {
 const useStyles = makeStyles(theme => ({
   root: {
     padding: '3rem',
+    [theme.breakpoints.down('sm')]: {
+      padding: '3rem 1rem',
+    }
   },
   showsContainer: {
     padding: '2rem 0rem',
@@ -30,6 +33,9 @@ const useStyles = makeStyles(theme => ({
   showContainer: {
     padding: '2rem 5rem',
     marginTop: '2rem',
+    [theme.breakpoints.down('sm')]: {
+      padding: '1rem 0rem',
+    }
   },
   showCard: {
     background: 'white',
@@ -115,8 +121,8 @@ const Admin = connect(state => ({
       <Grid item xs={12} md={6}>
         <div className={classes.showCard}>
           <Grid container spacing={3}>
-            <Grid item xs={4}><img src={show.image_url} alt="Cover" className={classes.showImg}/></Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12} md={4}><img src={show.image_url} alt="Cover" className={classes.showImg}/></Grid>
+            <Grid item xs={12} md={8}>
               <Typography variant="h6" className={classes.showTitle}>{show.name}</Typography>
               <Typography variant="body1" className={classes.showContent}>
                 {show.description}
@@ -188,6 +194,8 @@ const Admin = connect(state => ({
       }
     })
     .then(res => {
+      ReactSwal.close();
+
       if (res.status === 201) {
         showSuccess('Show Added!');
         reloadShows();

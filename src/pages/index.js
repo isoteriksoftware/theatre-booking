@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
     padding: '2rem 5rem',
     marginTop: '2rem',
     [theme.breakpoints.down('sm')]: {
-      padding: '0rem 1rem',
+      padding: '0rem',
       marginTop: '1rem',
     }
   },
