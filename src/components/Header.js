@@ -66,7 +66,7 @@ const Header = connect(state => ({
 
           <Hidden smDown>
             <Badge badgeContent={cart.length} color="secondary">
-              <Button variant="text" className={classes.checkoutLink}>Chekout Now</Button>
+              <Button variant="text" className={classes.checkoutLink}>Bookings</Button>
             </Badge>
 
             <div className={classes.flexGrow}/>
@@ -96,7 +96,7 @@ const Header = connect(state => ({
             >
               <MenuItem onClick={() => handleMenuClose(null)}>
                 <Badge badgeContent={cart.length} color="secondary">
-                  Chekout Now
+                  Bookings
                 </Badge>
               </MenuItem>
               {auth.authenticated ?

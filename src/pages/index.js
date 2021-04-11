@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   },
   showsContainer: {
     padding: '2rem 5rem',
-    marginTop: '1rem',
+    marginTop: '0rem',
     [theme.breakpoints.down('sm')]: {
       padding: '1rem',
       marginTop: '3rem',
