@@ -2,7 +2,7 @@ import { Button, makeStyles, Typography } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import { useEffect } from "react";
 import Header from "../components/Header";
-import { scrollToTop } from "../components/utils";
+import { axiosInstance, generateErrorsMarkup, scrollToTop, showError, showLoading, showNetworkError, showSuccess } from "../components/utils";
 import * as yup from "yup";
 import FormikField from "../components/FormikField";
 
@@ -64,6 +64,25 @@ const Register = () => {
     scrollToTop();
   }, []);
 
+  const doRegister = (values) => {
+    showLoading();
+
+    axiosInstance.post('user', values)
+    .then(res => {
+      if (res.status === 200) {
+        showSuccess(res.data.message);
+      }
+      else if (res.status === 400) {
+        console.log(res.data);
+        const body = generateErrorsMarkup(res.data.messages.error);
+        showError('Oops!', body);
+      }
+      else
+        showNetworkError();
+    })
+    .catch(() => showNetworkError());
+  };
+
   return (
     <div className={classes.root}>
       <Header/>
@@ -83,20 +102,20 @@ const Register = () => {
               .max(12, 'Username should not be greater than 12 characters')
               .required('Please enter your username'),
             name: yup.string()
-              .max(12, 'Name should not be greater than 30 characters')
+              .max(30, 'Name should not be greater than 30 characters')
               .required('Please enter your name'),
             password: yup.string()
               .required('Please enter your password'),
           })}
 
-          //onSubmit={doLogin}
+          onSubmit={doRegister}
           >
           <Form className={classes.form}>
             <FormikField
               name="username"
               variant="outlined"
               label="Username"
-              color="secondary"
+              color="primary"
               className="field"
               InputProps={{ className: "inner" }}
             />
@@ -105,7 +124,7 @@ const Register = () => {
               name="name"
               variant="outlined"
               label="Full Name"
-              color="secondary"
+              color="primary"
               className="field"
               InputProps={{ className: "inner" }}
             />
@@ -114,7 +133,7 @@ const Register = () => {
               name="password"
               variant="outlined"
               label="Password"
-              color="secondary"
+              color="primary"
               type="password"
               className="field"
               InputProps={{ className: "inner" }}

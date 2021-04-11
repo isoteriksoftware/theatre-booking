@@ -92,7 +92,7 @@ const Login = () => {
               name="username"
               variant="outlined"
               label="Username"
-              color="secondary"
+              color="primary"
               className="field"
               InputProps={{ className: "inner" }}
             />
@@ -101,7 +101,7 @@ const Login = () => {
               name="password"
               variant="outlined"
               label="Password"
-              color="secondary"
+              color="primary"
               type="password"
               className="field"
               InputProps={{ className: "inner" }}

@@ -166,7 +166,7 @@ const Admin = () => {
                   name="name"
                   variant="outlined"
                   label="Name"
-                  color="secondary"
+                  color="primary"
                   className="field"
                   InputProps={{ className: "inner" }}
                 />
@@ -174,7 +174,7 @@ const Admin = () => {
                   name="description"
                   variant="outlined"
                   label="Description"
-                  color="secondary"
+                  color="primary"
                   className="field"
                   multiline
                   rows={6}
