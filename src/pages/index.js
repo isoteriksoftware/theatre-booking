@@ -1,8 +1,11 @@
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import Header from "../components/Header";
-import { scrollToTop } from "../components/utils";
+import { axiosInstance, scrollToTop } from "../components/utils";
+import Skeleton from '@material-ui/lab/Skeleton';
+import { useDispatch } from "react-redux";
+import * as creators from '../redux/actions/creators';
 
 const useStyles = makeStyles(theme => ({
   showCaseContainer: {
@@ -77,30 +80,42 @@ const useStyles = makeStyles(theme => ({
 const Index = () => {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const [shows, setShows] = useState(null);
 
   useEffect(() => {
     scrollToTop();
   }, []);
 
+  useEffect(() => {
+    axiosInstance.get('shows')
+    .then(res => {
+      if (res.status === 200) {
+        const data = res.data;
+        setShows(data);
+      }
+      else if (res.status === 401)
+        dispatch(creators.user.logout());
+    })
+    .catch(() => {});
+  }, [dispatch]);
+
   const goTo = where => history.push(where);
 
-  const ShowCard = ({ show = { image: "images/card 10.jpg", name: "The Avengers",
-    description: "" } }) => {
+  const ShowCard = ({ show }) => {
     return (
       <Grid item xs={12} md={6}>
         <div className={classes.showCard}>
           <Grid container spacing={3}>
-            <Grid item xs={4}><img src={show.image} alt="Cover" className={classes.showImg}/></Grid>
+            <Grid item xs={4}><img src={show.image_url} alt="Cover" className={classes.showImg}/></Grid>
             <Grid item xs={8}>
               <Typography variant="h6" className={classes.showTitle}>{show.name}</Typography>
               <Typography variant="body1" className={classes.showContent}>
-                "We got a guy with things comin’ out of his hands, we got another guy who freezes stuff, 
-                and then there’s a man, who as far as I can tell, is made out of electricity. I mean, how did he disappear like that? What is goin’ on here? 
-                WHO IS THIS GUY?"
                 {show.description}
               </Typography>
               <div className={classes.showDate}>
-                <Typography variant="caption" color="textSecondary">2020-01-05 12:12:00</Typography>
+                <Typography variant="caption" color="textSecondary">{show.start_date}</Typography>
               </div>
               <Button fullWidth variant="outlined" color="secondary" className={classes.bookShowBtn}>Book A Seat</Button>
             </Grid>
@@ -123,7 +138,7 @@ const Index = () => {
               and then there’s a man, who as far as I can tell, is made out of electricity. I mean, how did he disappear like that? What is goin’ on here? 
               WHO IS THIS GUY?"
             </Typography>
-            <Button fullWidth variant="contained" color="secondary" className={classes.showCaseBtn}>Create Account</Button>
+            <Button fullWidth variant="contained" color="secondary" className={classes.showCaseBtn} onClick={() => goTo('/register')}>Create Account</Button>
           </div>
         </div>
       </div>
@@ -133,7 +148,10 @@ const Index = () => {
 
         <div className={classes.showContainer}>
           <Grid container alignItems="center" spacing={3}>
-            <ShowCard/> <ShowCard/> <ShowCard/> <ShowCard/>
+            {shows ? (
+              shows.map((show, index) => <ShowCard show={show}/>)
+            ) :
+            <Skeleton variant="rect" width="100%" height={300}/>}
           </Grid>
         </div>
       </div>
