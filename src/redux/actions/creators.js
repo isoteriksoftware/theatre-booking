@@ -18,13 +18,14 @@ export const admin = {
 export const user = {
     logout: () => ({type: constants.user.LOGOUT}),
 
-    authenticate: (authenticated, data, logout) => {
+    authenticate: (authenticated, data, logout, isAdmin = false) => {
         return {
             type: constants.user.AUTHENTICATE, 
             payload: {
                 authenticated: authenticated,
                 data: data,
                 logout: logout,
+                isAdmin: isAdmin,
             }
         }
     },

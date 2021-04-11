@@ -2,9 +2,12 @@ import { Button, makeStyles, Typography } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import { useEffect } from "react";
 import Header from "../components/Header";
-import { scrollToTop } from "../components/utils";
+import { axiosInstance, ReactSwal, scrollToTop, showError, showLoading, showNetworkError } from "../components/utils";
 import * as yup from "yup";
 import FormikField from "../components/FormikField";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+import * as creators from '../redux/actions/creators';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -59,10 +62,42 @@ const useStyles = makeStyles(theme => ({
 
 const AdminLogin = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     scrollToTop();
   }, []);
+
+  const doLogin = values => {
+    showLoading('Please wait...');
+
+    axiosInstance.post('admin/session', {}, {
+      auth: {
+        username: values.username,
+        password: values.password,
+      },
+    })
+    .then(res => {
+      ReactSwal.close();
+
+      if (res.status === 200) {
+        // Store persistent data
+        const data = {
+        };
+
+        dispatch(creators.user.authenticate(true, data, '/logout', true));
+        history.push('/admin');
+      }
+      else if (res.status === 401) {
+        showError('Oops!', 'Invalid username or password');
+      }
+      else {
+        showNetworkError();
+      }
+    })
+    .catch(() => showNetworkError())
+  };
 
   return (
     <div className={classes.root}>
@@ -85,14 +120,14 @@ const AdminLogin = () => {
               .required('Please enter your password'),
           })}
 
-          //onSubmit={doLogin}
+          onSubmit={doLogin}
           >
           <Form className={classes.form}>
             <FormikField
               name="username"
               variant="outlined"
               label="Username"
-              color="secondary"
+              color="primary"
               className="field"
               InputProps={{ className: "inner" }}
             />
@@ -101,7 +136,7 @@ const AdminLogin = () => {
               name="password"
               variant="outlined"
               label="Password"
-              color="secondary"
+              color="primary"
               type="password"
               className="field"
               InputProps={{ className: "inner" }}

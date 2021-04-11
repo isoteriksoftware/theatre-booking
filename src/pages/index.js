@@ -2,7 +2,7 @@ import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import Header from "../components/Header";
-import { axiosInstance, scrollToTop } from "../components/utils";
+import { axiosInstance, scrollToTop, showInfo } from "../components/utils";
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useDispatch } from "react-redux";
 import * as creators from '../redux/actions/creators';
@@ -95,6 +95,8 @@ const Index = () => {
         const data = res.data;
         setShows(data);
       }
+      else if (res.status === 404)
+        showInfo('Oops!', 'No scheduled performances at this time.');
       else if (res.status === 401)
         dispatch(creators.user.logout());
     })
