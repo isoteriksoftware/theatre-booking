@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 import Header from "../components/Header";
 import { axiosInstance, scrollToTop, showInfo } from "../components/utils";
 import Skeleton from '@material-ui/lab/Skeleton';
-import { useDispatch } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import * as creators from '../redux/actions/creators';
 
 const useStyles = makeStyles(theme => ({
@@ -98,7 +98,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Index = () => {
+const Index = connect(state => ({
+  auth: {...state.userReducer.auth},
+}))(({ auth }) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -142,7 +144,8 @@ const Index = () => {
               <div className={classes.showDate}>
                 <Typography variant="caption" color="textSecondary">{show.start_date}</Typography>
               </div>
-              <Button fullWidth variant="outlined" color="secondary" className={classes.bookShowBtn} onClick={() => addToCart(show)}>Book A Seat</Button>
+              {auth.authenticated &&
+              <Button fullWidth variant="outlined" color="secondary" className={classes.bookShowBtn} onClick={() => addToCart(show)}>Book A Seat</Button>}
             </Grid>
           </Grid>
         </div>
@@ -182,6 +185,6 @@ const Index = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Index;
