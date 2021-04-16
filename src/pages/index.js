@@ -2,7 +2,7 @@ import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import Header from "../components/Header";
-import { axiosInstance, scrollToTop, showInfo } from "../components/utils";
+import { axiosInstance, ReactSwal, scrollToTop, showInfo, showLoading, showSuccess } from "../components/utils";
 import Skeleton from '@material-ui/lab/Skeleton';
 import { connect, useDispatch } from "react-redux";
 import * as creators from '../redux/actions/creators';
@@ -126,7 +126,24 @@ const Index = connect(state => ({
     .catch(() => {});
   }, [dispatch]);
 
-  const addToCart = show => dispatch(creators.user.addToCart(show));
+  const addToCart = show => {
+    showLoading();
+
+    axiosInstance.post('user/booking', { show_id: show.id })
+    .then(res => {
+      ReactSwal.close();
+
+      if (res.status === 201) {
+        showSuccess('Success', `You have booked a seat for <strong>${show.name}</strong>`);
+        dispatch(creators.user.addToCart(show));
+      }
+      else if (res.status === 409)
+        showInfo('Oops!', 'Tickets are sold out for this show.');
+      else if (res.status === 401)
+        dispatch(creators.user.logout());
+    })
+    .catch(() => {});
+  };
 
   const goTo = where => history.push(where);
 
@@ -144,7 +161,7 @@ const Index = connect(state => ({
               <div className={classes.showDate}>
                 <Typography variant="caption" color="textSecondary">{show.start_date}</Typography>
               </div>
-              {auth.authenticated &&
+              {auth.authenticated && !auth.isAdmin &&
               <Button fullWidth variant="outlined" color="secondary" className={classes.bookShowBtn} onClick={() => addToCart(show)}>Book A Seat</Button>}
             </Grid>
           </Grid>

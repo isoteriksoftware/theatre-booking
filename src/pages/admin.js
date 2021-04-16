@@ -57,6 +57,11 @@ const useStyles = makeStyles(theme => ({
     lineHeight: '30px',
     fontSize: '.9rem',
   },
+  tickets: {
+    lineHeight: '30px',
+    //fontSize: '.9rem',
+    marginTop: '2rem',
+  },
   showDate: {
     textAlign: "right",
     paddingTop: '.5rem',
@@ -126,6 +131,9 @@ const Admin = connect(state => ({
               <Typography variant="h6" className={classes.showTitle}>{show.name}</Typography>
               <Typography variant="body1" className={classes.showContent}>
                 {show.description}
+              </Typography>
+              <Typography variant="h6" className={classes.tickets}>
+                {show.tickets} Ticket{ shows.tickets > 1 && 's'} Sold
               </Typography>
               <div className={classes.showDate}>
                 <Typography variant="caption" color="textSecondary">{show.start_date}</Typography>
